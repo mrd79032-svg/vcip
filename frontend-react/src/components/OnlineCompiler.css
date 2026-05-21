@@ -1,0 +1,238 @@
+.compiler-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.compiler-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.compiler-header h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.compiler-header p {
+    color: #7f8c8d;
+}
+
+.compiler-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.controls-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.controls-group label {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.language-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.run-btn {
+    background: #27ae60;
+    color: white;
+}
+
+.run-btn:hover:not(:disabled) {
+    background: #229954;
+}
+
+.run-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+.sample-btn {
+    background: #3498db;
+    color: white;
+}
+
+.sample-btn:hover {
+    background: #2980b9;
+}
+
+.clear-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.clear-btn:hover {
+    background: #c0392b;
+}
+
+.editor-section {
+    margin-bottom: 20px;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #34495e;
+    color: white;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+}
+
+.language-badge {
+    background: #2c3e50;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.code-editor {
+    width: 100%;
+    font-family: 'Courier New', 'Fira Code', monospace;
+    font-size: 14px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    background: #2d2d2d;
+    color: #f8f8f2;
+    resize: vertical;
+    line-height: 1.5;
+    min-height: 300px;
+}
+
+.code-editor:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.input-section, .output-section {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.input-area {
+    width: 100%;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    resize: vertical;
+    background: #f9fafb;
+}
+
+.output-area {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.output-area.success {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+}
+
+.output-area.error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.output-placeholder {
+    padding: 20px;
+    text-align: center;
+    background: #f9fafb;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    color: #9ca3af;
+}
+
+.loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ddd;
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .compiler-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .controls-group {
+        justify-content: space-between;
+    }
+    
+    .code-editor {
+        font-size: 12px;
+        min-height: 250px;
+    }
+}
