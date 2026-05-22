@@ -36,6 +36,8 @@ function CandidateDashboard() {
                     <h3>Welcome, {user.fullName || user.username}!</h3>
                     <p>Role: {user.role}</p>
                     <p>Email: {user.email}</p>
+                    <hr />
+                    <Link to="/compiler" className="btn btn-info me-2">💻 Try Online Compiler</Link>
                 </div>
             </div>
 

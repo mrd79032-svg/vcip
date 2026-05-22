@@ -10,10 +10,17 @@ const axios = require('axios');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 require('dotenv').config();
 
+// ==================== DEBUG: Check if API Key is Loaded ====================
+console.log('=== GEMINI API DEBUG ===');
+console.log('API Key exists:', !!process.env.GEMINI_API_KEY);
+console.log('API Key length:', process.env.GEMINI_API_KEY?.length);
+console.log('API Key first 5 chars:', process.env.GEMINI_API_KEY?.substring(0, 5));
+console.log('========================');
+
 const app = express();
 const server = http.createServer(app);
 
-// ==================== FIXED SOCKET.IO CONFIGURATION ====================
+// ==================== SOCKET.IO CONFIGURATION ====================
 const io = socketIo(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -114,11 +121,10 @@ const Submission = mongoose.model('Submission', submissionSchema);
 const Interview = mongoose.model('Interview', interviewSchema);
 const Violation = mongoose.model('Violation', violationSchema);
 
-// ==================== FIXED SOCKET.IO EVENTS ====================
+// ==================== SOCKET.IO EVENTS ====================
 io.on('connection', (socket) => {
     console.log('✅ New client connected:', socket.id);
     
-    // Register user in room
     socket.on('register-user', (data) => {
         const { userId, role, roomId } = data;
         socket.userId = userId;
@@ -136,7 +142,6 @@ io.on('connection', (socket) => {
         socket.join(roomId);
         console.log(`📌 ${role} ${userId} registered in room ${roomId}`);
         
-        // Notify the other user that someone joined
         socket.to(roomId).emit('user-joined', { 
             userId: socket.id, 
             role: role,
@@ -144,14 +149,12 @@ io.on('connection', (socket) => {
         });
     });
     
-    // Join interview room
     socket.on('join-interview-room', (roomId) => {
         socket.join(roomId);
         console.log(`🚪 User ${socket.id} joined room ${roomId}`);
         socket.to(roomId).emit('user-joined', { userId: socket.id, message: 'User joined' });
     });
     
-    // WebRTC Signaling
     socket.on('webrtc-signal', (data) => {
         const { roomId, signal, type } = data;
         console.log(`📡 WebRTC signal from ${socket.id}: ${type}`);
@@ -162,7 +165,6 @@ io.on('connection', (socket) => {
         });
     });
     
-    // Live code update
     socket.on('code-update', (data) => {
         const { roomId, code, language } = data;
         console.log(`📝 Code update from ${socket.id} in room ${roomId}`);
@@ -174,7 +176,6 @@ io.on('connection', (socket) => {
         });
     });
     
-    // Code sync for new joiners
     socket.on('request-code-sync', (data) => {
         const { roomId } = data;
         socket.to(roomId).emit('send-code-sync');
@@ -185,7 +186,6 @@ io.on('connection', (socket) => {
         socket.to(roomId).emit('code-sync', { code, language });
     });
     
-    // New question from interviewer
     socket.on('new-question', (data) => {
         const { roomId, question } = data;
         socket.to(roomId).emit('new-question', {
@@ -194,7 +194,6 @@ io.on('connection', (socket) => {
         });
     });
     
-    // Tab switch warning
     socket.on('tab-warning', (data) => {
         const { roomId, count } = data;
         console.log(`⚠️ Tab warning from ${socket.id}: ${count}`);
@@ -204,7 +203,6 @@ io.on('connection', (socket) => {
         });
     });
     
-    // Proctoring alert
     socket.on('proctoring-alert', (data) => {
         const { roomId, type, details } = data;
         socket.to(roomId).emit('proctoring-alert', {
@@ -214,7 +212,6 @@ io.on('connection', (socket) => {
         });
     });
     
-    // End interview
     socket.on('end-interview', (roomId) => {
         console.log(`🏁 Interview ended in room ${roomId}`);
         io.to(roomId).emit('interview-ended', {
@@ -223,7 +220,6 @@ io.on('connection', (socket) => {
         activeRooms.delete(roomId);
     });
     
-    // Leave room
     socket.on('leave-room', (roomId) => {
         socket.leave(roomId);
         console.log(`👋 User ${socket.id} left room ${roomId}`);
@@ -415,12 +411,15 @@ app.post('/api/compile/run', verifyToken, async (req, res) => {
 });
 
 // ==================== AI CODE EVALUATION ====================
-const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
-
 async function evaluateCodeWithAI(code, question, language, expectedOutput = null) {
-    if (!genAI) {
+    // Check if API key exists
+    if (!process.env.GEMINI_API_KEY) {
+        console.error('GEMINI_API_KEY is missing from .env file');
         return getEnhancedFallbackEvaluation();
     }
+    
+    // Initialize genAI
+    const genAIInstance = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     
     const prompt = `You are an expert coding interviewer. Evaluate the following code solution thoroughly.
 
@@ -455,13 +454,15 @@ Return ONLY valid JSON, no other text.`;
 
     try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 20000);
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
         
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAIInstance.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt, { signal: controller.signal });
         clearTimeout(timeoutId);
         
         const response = result.response.text();
+        console.log('AI Response received successfully');
+        
         const jsonMatch = response.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
             const evaluation = JSON.parse(jsonMatch[0]);
@@ -472,7 +473,13 @@ Return ONLY valid JSON, no other text.`;
         }
         return getEnhancedFallbackEvaluation();
     } catch (error) {
-        console.error('AI evaluation failed:', error.message);
+        console.error('AI evaluation failed - Full error:', error.message);
+        if (error.message.includes('API key')) {
+            console.error('API key issue - please check your GEMINI_API_KEY in .env file');
+        }
+        if (error.message.includes('quota')) {
+            console.error('API quota exceeded - please check your Google Cloud billing');
+        }
         return getEnhancedFallbackEvaluation();
     }
 }

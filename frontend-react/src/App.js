@@ -5,13 +5,13 @@ import './App.css';
 import Developers from './components/Developers';
 import DeveloperDetails from './components/DeveloperDetails';
 import OnlineCompiler from './components/OnlineCompiler';
-import LiveInterview from './components/LiveInterview';
+import ProctoringWrapper from './components/ProctoringWrapper';
+import CandidateDashboard from './components/CandidateDashboard';
 
 // ==================== HOME COMPONENT ====================
 function Home() {
     return (
         <div className="home-container">
-            {/* Hero Section */}
             <div className="hero-section">
                 <div className="hero-overlay"></div>
                 <div className="container">
@@ -26,186 +26,68 @@ function Home() {
                 </div>
             </div>
 
-            {/* Stats Section */}
             <div className="stats-section">
                 <div className="container">
                     <div className="row text-center">
-                        <div className="col-md-3 col-sm-6">
-                            <div className="stat-card zoom-card">
-                                <div className="stat-number">500+</div>
-                                <div className="stat-label">Coding Problems</div>
-                            </div>
-                        </div>
-                        <div className="col-md-3 col-sm-6">
-                            <div className="stat-card zoom-card">
-                                <div className="stat-number">10K+</div>
-                                <div className="stat-label">Interviews Conducted</div>
-                            </div>
-                        </div>
-                        <div className="col-md-3 col-sm-6">
-                            <div className="stat-card zoom-card">
-                                <div className="stat-number">98%</div>
-                                <div className="stat-label">Satisfaction Rate</div>
-                            </div>
-                        </div>
-                        <div className="col-md-3 col-sm-6">
-                            <div className="stat-card zoom-card">
-                                <div className="stat-number">50+</div>
-                                <div className="stat-label">Companies Trust Us</div>
-                            </div>
-                        </div>
+                        <div className="col-md-3 col-sm-6"><div className="stat-card zoom-card"><div className="stat-number">500+</div><div className="stat-label">Coding Problems</div></div></div>
+                        <div className="col-md-3 col-sm-6"><div className="stat-card zoom-card"><div className="stat-number">10K+</div><div className="stat-label">Interviews Conducted</div></div></div>
+                        <div className="col-md-3 col-sm-6"><div className="stat-card zoom-card"><div className="stat-number">98%</div><div className="stat-label">Satisfaction Rate</div></div></div>
+                        <div className="col-md-3 col-sm-6"><div className="stat-card zoom-card"><div className="stat-number">50+</div><div className="stat-label">Companies Trust Us</div></div></div>
                     </div>
                 </div>
             </div>
 
-            {/* Features Section */}
             <div className="features-section">
                 <div className="container">
                     <h2 className="section-title">Powerful Features</h2>
                     <p className="section-subtitle">Everything you need for a seamless coding interview experience</p>
                     <div className="row">
-                        <div className="col-md-4">
-                            <div className="feature-card zoom-card">
-                                <div className="feature-icon">🤖</div>
-                                <h3>AI-Powered Evaluation</h3>
-                                <p>Get instant feedback on your code quality and complexity</p>
-                            </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="feature-card zoom-card">
-                                <div className="feature-icon">💻</div>
-                                <h3>Live Code Editor</h3>
-                                <p>Write and run code in multiple languages</p>
-                            </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="feature-card zoom-card">
-                                <div className="feature-icon">🎥</div>
-                                <h3>Live Monitoring</h3>
-                                <p>Interviewers watch candidates in real-time</p>
-                            </div>
-                        </div>
+                        <div className="col-md-4"><div className="feature-card zoom-card"><div className="feature-icon">🤖</div><h3>AI-Powered Evaluation</h3><p>Get instant feedback on your code quality and complexity</p></div></div>
+                        <div className="col-md-4"><div className="feature-card zoom-card"><div className="feature-icon">💻</div><h3>Code Editor</h3><p>Write and run code in multiple languages</p></div></div>
+                        <div className="col-md-4"><div className="feature-card zoom-card"><div className="feature-icon">🛡️</div><h3>Anti-Cheating</h3><p>Tab switching detection, fullscreen enforcement</p></div></div>
                     </div>
                 </div>
             </div>
 
-            {/* Role Selection Section */}
             <div className="login-options-section">
                 <div className="container">
                     <h2 className="section-title">Choose Your Role</h2>
                     <p className="section-subtitle">Select the role that best describes you to get started</p>
                     <div className="row">
-                        <div className="col-md-4">
-                            <div className="role-card candidate-card zoom-card">
-                                <div className="role-icon">👨‍💻</div>
-                                <h3>Candidate</h3>
-                                <p>Take coding interviews and showcase your skills</p>
-                                <Link to="/login?role=candidate" className="btn btn-role zoom-btn">Login as Candidate</Link>
-                                <small className="register-link">New? <Link to="/register?role=candidate">Create Account</Link></small>
-                            </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="role-card interviewer-card zoom-card">
-                                <div className="role-icon">👨‍🏫</div>
-                                <h3>Interviewer</h3>
-                                <p>Create questions and conduct live interviews</p>
-                                <Link to="/login?role=interviewer" className="btn btn-role zoom-btn">Login as Interviewer</Link>
-                                <small className="register-link">New? <Link to="/register?role=interviewer">Create Account</Link></small>
-                            </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="role-card admin-card zoom-card">
-                                <div className="role-icon">👨‍💼</div>
-                                <h3>Admin</h3>
-                                <p>Manage questions and oversee platform</p>
-                                <Link to="/login?role=admin" className="btn btn-role zoom-btn">Login as Admin</Link>
-                                <small className="register-link">New? <Link to="/register?role=admin">Create Account</Link></small>
-                            </div>
-                        </div>
+                        <div className="col-md-4"><div className="role-card candidate-card zoom-card"><div className="role-icon">👨‍💻</div><h3>Candidate</h3><p>Take coding interviews and showcase your skills</p><Link to="/login?role=candidate" className="btn btn-role zoom-btn">Login as Candidate</Link><small className="register-link">New? <Link to="/register?role=candidate">Create Account</Link></small></div></div>
+                        <div className="col-md-4"><div className="role-card interviewer-card zoom-card"><div className="role-icon">👨‍🏫</div><h3>Interviewer</h3><p>Create questions and review submissions</p><Link to="/login?role=interviewer" className="btn btn-role zoom-btn">Login as Interviewer</Link><small className="register-link">New? <Link to="/register?role=interviewer">Create Account</Link></small></div></div>
+                        <div className="col-md-4"><div className="role-card admin-card zoom-card"><div className="role-icon">👨‍💼</div><h3>Admin</h3><p>Manage questions and oversee platform</p><Link to="/login?role=admin" className="btn btn-role zoom-btn">Login as Admin</Link><small className="register-link">New? <Link to="/register?role=admin">Create Account</Link></small></div></div>
                     </div>
                 </div>
             </div>
 
-            {/* How It Works Section */}
             <div className="how-it-works-section">
                 <div className="container">
                     <h2 className="section-title">How It Works</h2>
                     <p className="section-subtitle">Simple steps to conduct or take a coding interview</p>
                     <div className="row">
-                        <div className="col-md-3">
-                            <div className="step-card zoom-card">
-                                <div className="step-number">1</div>
-                                <h3>Create Account</h3>
-                                <p>Sign up as a candidate, interviewer, or admin</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="step-card zoom-card">
-                                <div className="step-number">2</div>
-                                <h3>Choose Question</h3>
-                                <p>Select from a library of coding problems</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="step-card zoom-card">
-                                <div className="step-number">3</div>
-                                <h3>Write Code</h3>
-                                <p>Solve problems in your preferred language</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="step-card zoom-card">
-                                <div className="step-number">4</div>
-                                <h3>Get Results</h3>
-                                <p>Receive instant AI feedback and scores</p>
-                            </div>
-                        </div>
+                        <div className="col-md-3"><div className="step-card zoom-card"><div className="step-number">1</div><h3>Create Account</h3><p>Sign up as a candidate, interviewer, or admin</p></div></div>
+                        <div className="col-md-3"><div className="step-card zoom-card"><div className="step-number">2</div><h3>Choose Question</h3><p>Select from a library of coding problems</p></div></div>
+                        <div className="col-md-3"><div className="step-card zoom-card"><div className="step-number">3</div><h3>Write Code</h3><p>Solve problems in your preferred language</p></div></div>
+                        <div className="col-md-3"><div className="step-card zoom-card"><div className="step-number">4</div><h3>Get Results</h3><p>Receive instant AI feedback and scores</p></div></div>
                     </div>
                 </div>
             </div>
 
-            {/* Developers Section Preview */}
             <div className="developers-section">
                 <div className="container">
                     <h2 className="section-title">Meet Our Developers</h2>
                     <p className="section-subtitle">The talented team behind VCIP</p>
                     <div className="row">
-                        <div className="col-md-3">
-                            <div className="developer-card zoom-card">
-                                <div className="developer-image">👨‍💻</div>
-                                <h3>Md Rasid Alam</h3>
-                                <p>Full Stack Developer</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="developer-card zoom-card">
-                                <div className="developer-image">👨‍💻</div>
-                                <h3>Md Faiz Alam</h3>
-                                <p>Backend Developer</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="developer-card zoom-card">
-                                <div className="developer-image">👨‍💻</div>
-                                <h3>Md Asif</h3>
-                                <p>Frontend Developer</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="developer-card zoom-card">
-                                <div className="developer-image">👩‍💻</div>
-                                <h3>Mehwish Fatima</h3>
-                                <p>UI/UX Designer</p>
-                            </div>
-                        </div>
+                        <div className="col-md-3"><div className="developer-card zoom-card"><div className="developer-image">👨‍💻</div><h3>Md Rasid Alam</h3><p>Full Stack Developer</p></div></div>
+                        <div className="col-md-3"><div className="developer-card zoom-card"><div className="developer-image">👨‍💻</div><h3>Md Faiz Alam</h3><p>Backend Developer</p></div></div>
+                        <div className="col-md-3"><div className="developer-card zoom-card"><div className="developer-image">👨‍💻</div><h3>Md Asif</h3><p>Frontend Developer</p></div></div>
+                        <div className="col-md-3"><div className="developer-card zoom-card"><div className="developer-image">👩‍💻</div><h3>Mehwish Fatima</h3><p>UI/UX Designer</p></div></div>
                     </div>
-                    <div className="text-center mt-4">
-                        <Link to="/developers" className="btn btn-light zoom-btn">View All Developers</Link>
-                    </div>
+                    <div className="text-center mt-4"><Link to="/developers" className="btn btn-light zoom-btn">View All Developers</Link></div>
                 </div>
             </div>
 
-            {/* CTA Section */}
             <div className="cta-section">
                 <div className="container">
                     <div className="cta-content">
@@ -216,33 +98,14 @@ function Home() {
                 </div>
             </div>
 
-            {/* Footer */}
             <footer className="footer">
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-4">
-                            <h4>VCIP</h4>
-                            <p>Virtual Coding Interview Platform - Making technical interviews smarter, faster, and fairer.</p>
-                        </div>
-                        <div className="col-md-4">
-                            <h4>Quick Links</h4>
-                            <ul>
-                                <li><Link to="/">Home</Link></li>
-                                <li><Link to="/developers">Developers</Link></li>
-                                <li><Link to="/compiler">Online Compiler</Link></li>
-                                <li><Link to="/register">Create Account</Link></li>
-                                <li><Link to="/login">Login</Link></li>
-                            </ul>
-                        </div>
-                        <div className="col-md-4">
-                            <h4>Contact</h4>
-                            <p>Email: support@vcip.com</p>
-                            <p>Phone: +91 1234567890</p>
-                        </div>
+                        <div className="col-md-4"><h4>VCIP</h4><p>Virtual Coding Interview Platform - Making technical interviews smarter, faster, and fairer.</p></div>
+                        <div className="col-md-4"><h4>Quick Links</h4><ul><li><Link to="/">Home</Link></li><li><Link to="/developers">Developers</Link></li><li><Link to="/compiler">Online Compiler</Link></li><li><Link to="/register">Create Account</Link></li><li><Link to="/login">Login</Link></li></ul></div>
+                        <div className="col-md-4"><h4>Contact</h4><p>Email: support@vcip.com</p><p>Phone: +91 1234567890</p></div>
                     </div>
-                    <div className="footer-bottom">
-                        <p>&copy; 2024 VCIP. All rights reserved. | Developed by Diploma in Computer Science, Jamia Millia Islamia</p>
-                    </div>
+                    <div className="footer-bottom"><p>&copy; 2024 VCIP. All rights reserved. | Developed by Diploma in Computer Science, Jamia Millia Islamia</p></div>
                 </div>
             </footer>
         </div>
@@ -263,7 +126,6 @@ function Login() {
         e.preventDefault();
         setLoading(true);
         setError('');
-        
         try {
             const res = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
@@ -272,14 +134,11 @@ function Login() {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
-            
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            
             if (data.user.role === 'admin') navigate('/admin');
             else if (data.user.role === 'interviewer') navigate('/interviewer-dashboard');
             else navigate('/candidate-dashboard');
-            
         } catch (err) {
             setError(err.message);
         } finally {
@@ -319,7 +178,6 @@ function Register() {
         setLoading(true);
         setError('');
         setSuccess('');
-        
         try {
             const res = await fetch('http://localhost:5000/api/auth/register', {
                 method: 'POST',
@@ -328,7 +186,6 @@ function Register() {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
-            
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             setSuccess('Registration successful! Redirecting...');
@@ -364,117 +221,16 @@ function Register() {
     );
 }
 
-// ==================== CANDIDATE DASHBOARD ====================
-function CandidateDashboard() {
-    const [user, setUser] = useState({});
-    const [questions, setQuestions] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const userData = localStorage.getItem('user');
-        if (userData) setUser(JSON.parse(userData));
-        fetchQuestions();
-    }, []);
-
-    const fetchQuestions = async () => {
-        try {
-            const res = await fetch('http://localhost:5000/api/questions');
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setQuestions(data);
-            } else {
-                console.error('Expected array but got:', data);
-                setQuestions([]);
-            }
-        } catch (err) {
-            console.error(err);
-            setQuestions([]);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const startLiveInterview = async (questionId) => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/interviews/start', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ questionId })
-            });
-            const data = await response.json();
-            
-            if (response.ok) {
-                const { interviewId, roomId } = data;
-                navigate(`/live-interview/${interviewId}/${roomId}`);
-            } else {
-                alert('Failed to start interview: ' + data.error);
-            }
-        } catch (err) {
-            console.error('Error starting interview:', err);
-            alert('Failed to start interview. Please try again.');
-        }
-    };
-
-    if (loading) return <div className="text-center mt-5">Loading...</div>;
-
-    return (
-        <div>
-            <div className="card mb-4">
-                <div className="card-header bg-success text-white">
-                    <h4>Candidate Dashboard</h4>
-                </div>
-                <div className="card-body">
-                    <h3>Welcome, {user.fullName || user.username}!</h3>
-                    <p>Role: {user.role}</p>
-                    <p>Email: {user.email}</p>
-                    <hr />
-                    <Link to="/compiler" className="btn btn-info me-2">💻 Try Online Compiler</Link>
-                </div>
-            </div>
-            <h3>Available Coding Questions</h3>
-            {!Array.isArray(questions) || questions.length === 0 ? (
-                <p>No questions available yet.</p>
-            ) : (
-                <div className="row">
-                    {questions.map(q => (
-                        <div className="col-md-4 mb-3" key={q._id}>
-                            <div className="card h-100">
-                                <div className="card-body">
-                                    <h5>{q.title}</h5>
-                                    <p className="text-muted">Difficulty: {q.difficulty}</p>
-                                    <button 
-                                        onClick={() => startLiveInterview(q._id)} 
-                                        className="btn btn-primary"
-                                    >
-                                        🎥 Start Live Interview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-}
-
 // ==================== INTERVIEWER DASHBOARD ====================
 function InterviewerDashboard() {
     const [user, setUser] = useState({});
     const [myQuestions, setMyQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeInterviews, setActiveInterviews] = useState([]);
 
     useEffect(() => {
         const userData = localStorage.getItem('user');
         if (userData) setUser(JSON.parse(userData));
         fetchMyQuestions();
-        fetchActiveInterviews();
     }, []);
 
     const fetchMyQuestions = async () => {
@@ -484,44 +240,18 @@ function InterviewerDashboard() {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
-            if (Array.isArray(data)) {
-                setMyQuestions(data);
-            } else {
-                console.error('Expected array but got:', data);
-                setMyQuestions([]);
-            }
+            if (Array.isArray(data)) setMyQuestions(data);
+            else setMyQuestions([]);
         } catch (err) {
-            console.error('Error fetching questions:', err);
+            console.error(err);
             setMyQuestions([]);
         } finally {
             setLoading(false);
         }
     };
 
-    const fetchActiveInterviews = async () => {
-        const token = localStorage.getItem('token');
-        try {
-            const res = await fetch('http://localhost:5000/api/interviews/active', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setActiveInterviews(data);
-            } else {
-                console.error('Expected array but got:', data);
-                setActiveInterviews([]);
-            }
-        } catch (err) {
-            console.error('Error fetching active interviews:', err);
-            setActiveInterviews([]);
-        }
-    };
-
     const renderQuestions = () => {
-        if (!Array.isArray(myQuestions) || myQuestions.length === 0) {
-            return <p>No questions submitted yet.</p>;
-        }
-        
+        if (myQuestions.length === 0) return <p>No questions submitted yet.</p>;
         return (
             <div className="list-group">
                 {myQuestions.map(q => (
@@ -539,9 +269,7 @@ function InterviewerDashboard() {
     return (
         <div>
             <div className="card mb-4">
-                <div className="card-header bg-success text-white">
-                    <h4>Interviewer Dashboard</h4>
-                </div>
+                <div className="card-header bg-success text-white"><h4>Interviewer Dashboard</h4></div>
                 <div className="card-body">
                     <h3>Welcome, {user.fullName || user.username}!</h3>
                     <p>Role: {user.role}</p>
@@ -551,38 +279,8 @@ function InterviewerDashboard() {
                     <Link to="/compiler" className="btn btn-info me-2">💻 Online Compiler</Link>
                 </div>
             </div>
-
-            {Array.isArray(activeInterviews) && activeInterviews.length > 0 && (
-                <div className="card mb-4">
-                    <div className="card-header bg-warning">
-                        <h4>🎥 Active Interviews</h4>
-                    </div>
-                    <div className="card-body">
-                        <div className="row">
-                            {activeInterviews.map(interview => (
-                                <div className="col-md-6 mb-3" key={interview._id}>
-                                    <div className="card">
-                                        <div className="card-body">
-                                            <h5>Candidate: {interview.candidateId?.fullName || interview.candidateId?.username || 'Unknown'}</h5>
-                                            <p>Question: {interview.questionId?.title || 'Loading...'}</p>
-                                            <Link to={`/live-interview/${interview._id}/${interview.roomId}`} className="btn btn-danger">
-                                                Join Live Interview
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
-
             <h3>My Submitted Questions</h3>
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
-                renderQuestions()
-            )}
+            {loading ? <p>Loading...</p> : renderQuestions()}
         </div>
     );
 }
@@ -608,15 +306,12 @@ function AdminDashboard() {
             const statsRes = await fetch('http://localhost:5000/api/admin/stats', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const statsData = await statsRes.json();
-            setStats(statsData || {});
-            
+            setStats(await statsRes.json() || {});
             const pendingRes = await fetch('http://localhost:5000/api/admin/pending-questions', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const pendingData = await pendingRes.json();
             setPendingQuestions(Array.isArray(pendingData) ? pendingData : []);
-            
             const usersRes = await fetch('http://localhost:5000/api/admin/users', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -646,9 +341,7 @@ function AdminDashboard() {
     return (
         <div className="container mt-4">
             <div className="card mb-4">
-                <div className="card-header bg-success text-white">
-                    <h4>Admin Dashboard</h4>
-                </div>
+                <div className="card-header bg-success text-white"><h4>Admin Dashboard</h4></div>
                 <div className="card-body">
                     <h3>Welcome, {user.fullName || user.username}!</h3>
                     <p>Role: {user.role}</p>
@@ -692,7 +385,11 @@ function AdminDashboard() {
                     <div className="card-body">
                         <table className="table table-bordered">
                             <thead className="table-dark">
-                                <tr><th>Name</th><th>Email</th><th>Role</th></tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 {users.map(u => (
@@ -778,13 +475,17 @@ function CreateQuestion() {
     );
 }
 
-// ==================== INTERVIEW COMPONENT (Legacy - Kept for compatibility) ====================
+// ==================== INTERVIEW COMPONENT ====================
 function Interview() {
     const { id } = useParams();
     const [question, setQuestion] = useState(null);
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState('// Write your solution here\n\nfunction solve() {\n    \n}');
     const [output, setOutput] = useState('');
-    const navigate = useNavigate();
+    const [language, setLanguage] = useState('javascript');
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const [aiFeedback, setAiFeedback] = useState('');
+    const [stdin, setStdin] = useState('');
 
     useEffect(() => {
         const fetchQuestion = async () => {
@@ -794,60 +495,183 @@ function Interview() {
                 setQuestion(data);
             } catch (err) {
                 console.error(err);
+            } finally {
+                setLoading(false);
             }
         };
         fetchQuestion();
     }, [id]);
 
-    const handleStartLive = async () => {
+    const handleRunCode = async () => {
+        setOutput('Running...');
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/interviews/start', {
+            const response = await fetch('http://localhost:5000/api/compile/run', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ questionId: id })
+                body: JSON.stringify({ 
+                    code: code, 
+                    language: language, 
+                    stdin: stdin 
+                })
             });
             const data = await response.json();
-            
-            if (response.ok) {
-                const { interviewId, roomId } = data;
-                navigate(`/live-interview/${interviewId}/${roomId}`);
-            } else {
-                alert('Failed to start interview: ' + data.error);
-            }
+            setOutput(data.output || data.error || 'No output');
         } catch (err) {
-            console.error('Error starting interview:', err);
-            alert('Failed to start interview. Please try again.');
+            setOutput('Error: ' + err.message);
         }
     };
 
     const handleSubmit = async () => {
-        const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/submissions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ code, questionId: id })
-        });
-        const data = await res.json();
-        setOutput(data.aiReview || 'Submitted!');
+        setSubmitting(true);
+        setAiFeedback('');
+        try {
+            const token = localStorage.getItem('token');
+            
+            const submitRes = await fetch('http://localhost:5000/api/submissions', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${token}` 
+                },
+                body: JSON.stringify({ code, questionId: id, language })
+            });
+            await submitRes.json();
+            
+            const evalRes = await fetch('http://localhost:5000/api/evaluate/submission', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${token}` 
+                },
+                body: JSON.stringify({ code, questionId: id, language })
+            });
+            const evalData = await evalRes.json();
+            
+            if (evalData.success) {
+                setAiFeedback(`✅ AI Score: ${evalData.evaluation.score}/100\n\n📝 Correctness: ${evalData.evaluation.correctness}\n⏱ Time Complexity: ${evalData.evaluation.timeComplexity}\n💾 Space Complexity: ${evalData.evaluation.spaceComplexity}\n\n📊 Feedback: ${evalData.evaluation.detailedFeedback}`);
+            } else {
+                setAiFeedback('Submitted! AI evaluation will be available shortly.');
+            }
+            alert('Code submitted successfully!');
+        } catch (err) {
+            console.error('Submission error:', err);
+            alert('Submission failed: ' + err.message);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
-    if (!question) return <div>Loading...</div>;
+    if (loading) return <div className="text-center mt-5">Loading...</div>;
+    if (!question) return <div className="text-center mt-5">Question not found.</div>;
 
     return (
-        <div>
-            <h2>{question.title}</h2>
-            <p>{question.description}</p>
-            <textarea className="form-control" rows="10" value={code} onChange={e => setCode(e.target.value)} />
-            <button className="btn btn-primary mt-2" onClick={handleSubmit}>Submit</button>
-            <button className="btn btn-success mt-2 ms-2" onClick={handleStartLive}>🎥 Start Live Interview</button>
-            {output && <pre className="mt-2">{output}</pre>}
-            <hr />
-            <Link to="/compiler" className="btn btn-info">💻 Open Full Compiler</Link>
+        <div className="container mt-4">
+            <div className="card mb-4">
+                <div className="card-header bg-primary text-white">
+                    <h4>{question.title}</h4>
+                </div>
+                <div className="card-body">
+                    <p><strong>Description:</strong></p>
+                    <p>{question.description}</p>
+                    {question.difficulty && (
+                        <p><strong>Difficulty:</strong> <span className="badge bg-secondary">{question.difficulty}</span></p>
+                    )}
+                </div>
+            </div>
+
+            <div className="card">
+                <div className="card-header bg-secondary text-white">
+                    <h4>✏️ Code Editor</h4>
+                </div>
+                <div className="card-body">
+                    <div className="mb-3">
+                        <label className="form-label"><strong>Language:</strong></label>
+                        <select 
+                            value={language} 
+                            onChange={(e) => setLanguage(e.target.value)}
+                            className="form-select w-25"
+                        >
+                            <option value="javascript">JavaScript (Node.js)</option>
+                            <option value="python">Python 3</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="c">C</option>
+                        </select>
+                    </div>
+                    
+                    <div className="mb-3">
+                        <label className="form-label"><strong>Input (stdin):</strong></label>
+                        <textarea
+                            value={stdin}
+                            onChange={(e) => setStdin(e.target.value)}
+                            className="form-control"
+                            rows="3"
+                            placeholder="Enter input for your program (e.g., numbers, strings)"
+                            style={{ fontFamily: 'monospace', fontSize: '14px' }}
+                        />
+                    </div>
+                    
+                    <textarea
+                        className="form-control"
+                        rows="12"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        style={{ fontFamily: 'Consolas, monospace', fontSize: '14px' }}
+                    />
+                    
+                    <div className="mt-3">
+                        <button 
+                            className="btn btn-success me-2" 
+                            onClick={handleRunCode}
+                        >
+                            ▶ Run Code
+                        </button>
+                        <button 
+                            className="btn btn-primary" 
+                            onClick={handleSubmit}
+                            disabled={submitting}
+                        >
+                            {submitting ? 'Submitting...' : '📤 Submit & Evaluate'}
+                        </button>
+                    </div>
+                    
+                    {output && (
+                        <div className="mt-3">
+                            <h5>📤 Output:</h5>
+                            <pre className="bg-dark text-light p-3 rounded" style={{ overflow: 'auto' }}>{output}</pre>
+                        </div>
+                    )}
+                    
+                    {aiFeedback && (
+                        <div className="mt-3">
+                            <h5>🤖 AI Evaluation:</h5>
+                            <pre className="bg-success bg-opacity-10 text-success p-3 rounded border border-success" style={{ whiteSpace: 'pre-wrap' }}>{aiFeedback}</pre>
+                        </div>
+                    )}
+                </div>
+            </div>
+            
+            <div className="mt-3 text-center">
+                <Link to="/compiler" className="btn btn-info">💻 Open Full Practice Compiler</Link>
+            </div>
         </div>
+    );
+}
+
+// ==================== WRAPPER COMPONENT FOR PROCTORING ====================
+function InterviewWithProctoring() {
+    const { id } = useParams();
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const currentUserId = userData._id;
+    
+    return (
+        <ProctoringWrapper interviewId={id} candidateId={currentUserId}>
+            <Interview />
+        </ProctoringWrapper>
     );
 }
 
@@ -937,8 +761,12 @@ function App() {
                     <Route path="/interviewer-dashboard" element={<ProtectedRoute allowedRoles={['interviewer', 'admin']}><InterviewerDashboard /></ProtectedRoute>} />
                     <Route path="/create-question" element={<ProtectedRoute allowedRoles={['interviewer', 'admin']}><CreateQuestion /></ProtectedRoute>} />
                     <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
-                    <Route path="/interview/:id" element={<ProtectedRoute allowedRoles={['candidate']}><Interview /></ProtectedRoute>} />
-                    <Route path="/live-interview/:interviewId/:roomId" element={<ProtectedRoute><LiveInterview /></ProtectedRoute>} />
+                    
+                    <Route path="/interview/:id" element={
+                        <ProtectedRoute allowedRoles={['candidate']}>
+                            <InterviewWithProctoring />
+                        </ProtectedRoute>
+                    } />
                 </Routes>
             </div>
         </Router>
