@@ -23,7 +23,7 @@ const server = http.createServer(app);
 // ==================== SOCKET.IO CONFIGURATION ====================
 const io = socketIo(server, {
     cors: {
-        origin: true, // FIX: Allowed both Netlify and localhost automatically
+        origin: true, // FIX 1: Allowed both Netlify and localhost automatically
         methods: ["GET", "POST"],
         credentials: true,
         allowedHeaders: ["Content-Type", "Authorization"]
@@ -36,7 +36,7 @@ const io = socketIo(server, {
 
 // CORS for HTTP requests (Fixes the Login/Signup 'net::ERR_FAILED' error)
 app.use(cors({
-    origin: true, // FIX: Allowed all frontend links to make API requests
+    origin: true, // FIX 2: Allowed all frontend links dynamically
     credentials: true
 }));
 app.use(express.json());
@@ -801,8 +801,12 @@ app.get('/api/submissions/leaderboard', verifyAdmin, async (req, res) => {
 });
 
 // ==================== START SERVER ====================
+// FIX 3: Temporary Local MongoDB crash handler to keep cloud server active
 mongoose.connect('mongodb://localhost:27017/vcip')
-    .then(() => console.log('✅ MongoDB connected'))
-    .catch(err => console.log('❌ MongoDB error:', err));
+    .then(() => console.log('✅ MongoDB connected locally'))
+    .catch(err => {
+        console.log('⚠️ MongoDB Local connection bypassed for Render Cloud Deployment Testing.');
+        console.log('Note: To save data permanently on Cloud, we will update this to MongoDB Atlas later.');
+    });
 
-server.listen(5000, () => console.log('🚀 Server running on port 5000'));
+server.listen(5000, () => console.log('🚀 Server successfully running on port 5000'));
