@@ -612,22 +612,34 @@ app.post('/api/interviews/start', verifyToken, async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});// ==================== FIXED MONGOOSE CONNECTION FOR CLOUD ENVIRONMENT ====================
-// Hardcoded fallback direct cloud atlas link ke sath taaki buffering timeout bilkul na aaye
-const MONGO_URI = 'mongodb+srv://mrd79032_db_user:dhqWoIatQhIhC0WR@cluster0.vu6imfj.mongodb.net/vcip?retryWrites=true&w=majority&appName=Cluster0';
-
-mongoose.connect(MONGO_URI, {
-    serverSelectionTimeoutMS: 5000, 
-    socketTimeoutMS: 45000,         
-})
-.then(() => {
-    console.log("✅ MongoDB Successfully Connected to MongoDB Atlas Cloud");
-})
-.catch(err => {
-    console.error('❌ CRITICAL: Database connection failed.');
-    console.error(err.message);
 });
 
-// Port settings for Render Deployment
+// ==================== HYBRID MONGOOSE CONNECTION FOR VIVA SAFETY ====================
+// Smart Handler: Pehle check karega agar cloud uri local environment me error de rhi h, to instantly local fallback use karega
+const CLOUD_URI = 'mongodb+srv://mrd79032_db_user:Rasid9852@cluster0.vu6imfj.mongodb.net/vcip?retryWrites=true&w=majority&appName=Cluster0';
+const LOCAL_URI = 'mongodb://127.0.0.1:27017/vcip';
+
+const connectDB = async () => {
+    try {
+        // Force try cloud connectivity with tight timeout so it doesn't freeze the screen
+        await mongoose.connect(CLOUD_URI, {
+            serverSelectionTimeoutMS: 3000, 
+            socketTimeoutMS: 45000,          
+        });
+        console.log("✅ MongoDB Successfully Connected to MongoDB Atlas Cloud");
+    } catch (cloudErr) {
+        console.log("⚠️ Cloud Database connection block or timeout! Switching to Localhost Fallback for Project Demo...");
+        try {
+            await mongoose.connect(LOCAL_URI);
+            console.log("✅ MongoDB Successfully Connected to: Local Database (Compass)");
+        } catch (localErr) {
+            console.error('❌ CRITICAL: Both Cloud and Local Database connection failed.');
+        }
+    }
+};
+
+connectDB();
+
+// Port settings for Render Deployment / Localhost execution
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
