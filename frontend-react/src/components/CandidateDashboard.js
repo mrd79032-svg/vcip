@@ -14,7 +14,7 @@ function CandidateDashboard() {
 
     const fetchQuestions = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/questions');
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions');
             const data = await res.json();
             setQuestions(data);
         } catch (err) {

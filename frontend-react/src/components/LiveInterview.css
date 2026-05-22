@@ -1,0 +1,263 @@
+.live-interview {
+    height: 100vh;
+    background: #1e1e1e;
+    color: #fff;
+}
+
+.interview-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Video Section */
+.video-section {
+    display: flex;
+    gap: 20px;
+    background: #2d2d2d;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.video-panel {
+    flex: 1;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.video-panel h4 {
+    margin: 0 0 10px 0;
+    color: #ccc;
+}
+
+.video-player {
+    width: 100%;
+    height: 200px;
+    background: #000;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.video-controls {
+    margin-top: 10px;
+}
+
+.btn-screen-share, .btn-stop-share {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-screen-share {
+    background: #28a745;
+    color: white;
+}
+
+.btn-stop-share {
+    background: #dc3545;
+    color: white;
+}
+
+.video-note {
+    color: #888;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* Code Section */
+.code-section {
+    flex: 1;
+    background: #2d2d2d;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #3d3d3d;
+    border-bottom: 1px solid #555;
+}
+
+.code-header select {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    background: #1e1e1e;
+    color: white;
+    cursor: pointer;
+}
+
+.code-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-run {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-end {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.code-editor {
+    flex: 1;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    padding: 15px;
+    border: none;
+    resize: none;
+    outline: none;
+}
+
+.output-section {
+    background: #1e1e1e;
+    border-top: 1px solid #555;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.output-section h4 {
+    margin: 0 0 10px 0;
+    color: #ccc;
+}
+
+.output {
+    background: #0a0a0a;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+/* Proctoring Panel */
+.proctoring-panel {
+    position: fixed;
+    right: 20px;
+    top: 80px;
+    width: 300px;
+    background: #2d2d2d;
+    border-radius: 10px;
+    padding: 15px;
+    border-left: 4px solid #ffc107;
+    z-index: 1000;
+}
+
+.proctoring-panel h4 {
+    margin: 0 0 10px 0;
+    color: #ffc107;
+}
+
+.alerts-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.no-alerts {
+    color: #888;
+    text-align: center;
+}
+
+.alert-item {
+    background: #3d2a00;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.alert-time {
+    color: #ffc107;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.alert-message {
+    color: #fff;
+}
+
+/* Interview Ended Overlay */
+.interview-ended-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.ended-message {
+    background: #2d2d2d;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ended-message h2 {
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.ended-message button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .video-section {
+        flex-direction: column;
+    }
+    
+    .proctoring-panel {
+        position: relative;
+        width: 100%;
+        right: auto;
+        top: auto;
+        margin-top: 20px;
+    }
+}

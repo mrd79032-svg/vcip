@@ -21,21 +21,21 @@ function AdminDashboard() {
         
         try {
             // Fetch stats
-            const statsRes = await fetch('http://localhost:5000/api/admin/stats', {
+            const statsRes = await fetch('https://vcip-backend-utej.onrender.com/api/admin/stats', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const statsData = await statsRes.json();
             setStats(statsData);
             
             // Fetch pending questions
-            const pendingRes = await fetch('http://localhost:5000/api/admin/pending-questions', {
+            const pendingRes = await fetch('https://vcip-backend-utej.onrender.com/api/admin/pending-questions', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const pendingData = await pendingRes.json();
             setPendingQuestions(pendingData);
             
             // Fetch all users
-            const usersRes = await fetch('http://localhost:5000/api/admin/users', {
+            const usersRes = await fetch('https://vcip-backend-utej.onrender.com/api/admin/users', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const usersData = await usersRes.json();
@@ -52,7 +52,7 @@ function AdminDashboard() {
     const approveQuestion = async (id) => {
         const token = localStorage.getItem('token');
         try {
-            await fetch(`http://localhost:5000/api/admin/approve/${id}`, {
+            await fetch(`https://vcip-backend-utej.onrender.com/api/admin/approve/${id}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -67,7 +67,7 @@ function AdminDashboard() {
         if (!window.confirm('Reject this question?')) return;
         const token = localStorage.getItem('token');
         try {
-            await fetch(`http://localhost:5000/api/admin/reject/${id}`, {
+            await fetch(`https://vcip-backend-utej.onrender.com/api/admin/reject/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

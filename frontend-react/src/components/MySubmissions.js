@@ -15,7 +15,7 @@ function MySubmissions() {
   const fetchSubmissions = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/submissions/my', {
+      const res = await axios.get('https://vcip-backend-utej.onrender.com/api/submissions/my', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSubmissions(res.data);

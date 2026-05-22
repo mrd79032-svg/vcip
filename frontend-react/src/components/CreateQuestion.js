@@ -17,7 +17,7 @@ function CreateQuestion() {
         setMessage('');
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/questions/generate', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions/generate', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ function CreateQuestion() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/questions', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ function CreateQuestion() {
         setMessage('');
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/questions/generate', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions/generate', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ function CreateQuestion() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await fetch('http://localhost:5000/api/questions', {
+            await fetch('https://vcip-backend-utej.onrender.com/api/questions', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

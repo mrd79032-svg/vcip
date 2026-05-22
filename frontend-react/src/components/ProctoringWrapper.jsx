@@ -30,7 +30,7 @@ const ProctoringWrapper = ({ children, interviewId, candidateId }) => {
     const logViolation = useCallback(async (type) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:5000/api/proctoring/violation', {
+            await axios.post('https://vcip-backend-utej.onrender.com/api/proctoring/violation', {
                 interviewId: interviewId,
                 candidateId: candidateId,
                 type: type,

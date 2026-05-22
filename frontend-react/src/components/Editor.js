@@ -1,37 +1,32 @@
 import React from 'react';
-import CodeMirror from '@uiw/react-codemirror';
-import { python } from '@codemirror/lang-python';
-import { java } from '@codemirror/lang-java';
-import { cpp } from '@codemirror/lang-cpp';
-import { javascript } from '@codemirror/lang-javascript';
-import { dracula } from '@uiw/codemirror-theme-dracula';
-
-const getExtension = (language) => {
-    switch (language) {
-        case 'python': return python();
-        case 'java': return java();
-        case 'cpp': return cpp();
-        case 'javascript': return javascript();
-        default: return python();
-    }
-};
 
 function Editor({ code, onChange, language = 'python', readOnly = false }) {
     return (
-        <CodeMirror
+        <textarea
             value={code}
-            height="400px"
-            theme={dracula}
-            extensions={[getExtension(language)]}
-            onChange={onChange}
+            onChange={(e) => onChange(e.target.value)}
             readOnly={readOnly}
-            basicSetup={{
-                lineNumbers: true,
-                highlightActiveLineGutter: true,
-                foldGutter: true,
-                dropCursor: true,
-                allowMultipleSelections: true,
-                indentOnInput: true
+            className="form-control font-monospace"
+            style={{
+                fontFamily: 'monospace',
+                fontSize: '14px',
+                minHeight: '400px',
+                backgroundColor: '#1e1e1e',
+                color: '#d4d4d4',
+                padding: '15px'
+            }}
+            placeholder={`Write your ${language} code here...`}
+            onCopy={(e) => {
+                if (!readOnly) {
+                    e.preventDefault();
+                    alert('Copy is disabled during interview!');
+                }
+            }}
+            onPaste={(e) => {
+                if (!readOnly) {
+                    e.preventDefault();
+                    alert('Paste is disabled during interview!');
+                }
             }}
         />
     );

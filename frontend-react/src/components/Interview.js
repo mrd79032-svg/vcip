@@ -32,7 +32,7 @@ function Interview() {
 
     const fetchQuestion = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/questions/${id}`);
+            const res = await fetch(`https://vcip-backend-utej.onrender.com/api/questions/${id}`);
             const data = await res.json();
             setQuestion(data);
             setLoading(false);
@@ -43,7 +43,7 @@ function Interview() {
 
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/submissions', {
+        const res = await fetch('https://vcip-backend-utej.onrender.com/api/submissions', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',

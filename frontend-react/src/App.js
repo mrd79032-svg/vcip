@@ -127,7 +127,7 @@ function Login() {
         setLoading(true);
         setError('');
         try {
-            const res = await fetch('http://localhost:5000/api/auth/login', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -179,7 +179,7 @@ function Register() {
         setError('');
         setSuccess('');
         try {
-            const res = await fetch('http://localhost:5000/api/auth/register', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...form, role })
@@ -236,7 +236,7 @@ function InterviewerDashboard() {
     const fetchMyQuestions = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://localhost:5000/api/questions/my-questions', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions/my-questions', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -303,16 +303,16 @@ function AdminDashboard() {
     const fetchData = async () => {
         const token = localStorage.getItem('token');
         try {
-            const statsRes = await fetch('http://localhost:5000/api/admin/stats', {
+            const statsRes = await fetch('https://vcip-backend-utej.onrender.com/api/admin/stats', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setStats(await statsRes.json() || {});
-            const pendingRes = await fetch('http://localhost:5000/api/admin/pending-questions', {
+            const pendingRes = await fetch('https://vcip-backend-utej.onrender.com/api/admin/pending-questions', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const pendingData = await pendingRes.json();
             setPendingQuestions(Array.isArray(pendingData) ? pendingData : []);
-            const usersRes = await fetch('http://localhost:5000/api/admin/users', {
+            const usersRes = await fetch('https://vcip-backend-utej.onrender.com/api/admin/users', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const usersData = await usersRes.json();
@@ -329,7 +329,7 @@ function AdminDashboard() {
 
     const approveQuestion = async (id) => {
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5000/api/admin/approve/${id}`, {
+        await fetch(`https://vcip-backend-utej.onrender.com/api/admin/approve/${id}`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -421,7 +421,7 @@ function CreateQuestion() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/questions/generate', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ prompt })
@@ -440,7 +440,7 @@ function CreateQuestion() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await fetch('http://localhost:5000/api/questions', {
+            await fetch('https://vcip-backend-utej.onrender.com/api/questions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify(generated)
@@ -490,7 +490,7 @@ function Interview() {
     useEffect(() => {
         const fetchQuestion = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/questions/${id}`);
+                const res = await fetch(`https://vcip-backend-utej.onrender.com/api/questions/${id}`);
                 const data = await res.json();
                 setQuestion(data);
             } catch (err) {
@@ -506,7 +506,7 @@ function Interview() {
         setOutput('Running...');
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/compile/run', {
+            const response = await fetch('https://vcip-backend-utej.onrender.com/api/compile/run', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -531,7 +531,7 @@ function Interview() {
         try {
             const token = localStorage.getItem('token');
             
-            const submitRes = await fetch('http://localhost:5000/api/submissions', {
+            const submitRes = await fetch('https://vcip-backend-utej.onrender.com/api/submissions', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json', 
@@ -541,7 +541,7 @@ function Interview() {
             });
             await submitRes.json();
             
-            const evalRes = await fetch('http://localhost:5000/api/evaluate/submission', {
+            const evalRes = await fetch('https://vcip-backend-utej.onrender.com/api/evaluate/submission', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json', 

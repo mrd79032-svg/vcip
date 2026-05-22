@@ -21,7 +21,7 @@ function InterviewerDashboard() {
     const fetchMyQuestions = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/questions/my-questions', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/questions/my-questions', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -41,7 +41,7 @@ function InterviewerDashboard() {
     const fetchActiveInterviews = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://localhost:5000/api/interviews/active', {
+            const res = await fetch('https://vcip-backend-utej.onrender.com/api/interviews/active', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
