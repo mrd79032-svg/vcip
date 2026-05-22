@@ -15,8 +15,12 @@ function Login() {
         setLoading(true);
         setError('');
         
+        // FIX: Forced fallback directly to your live Render server url
+        const API_URL = process.env.REACT_APP_API_URL || 'https://vcip-prod-server.onrender.com';
+        
         try {
-            const res = await fetch('https://vcip-backend-utej.onrender.com/api/auth/login', {
+            // Dynamic template literal points to live cloud server
+            const res = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })

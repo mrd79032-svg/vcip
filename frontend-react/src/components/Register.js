@@ -77,6 +77,9 @@ function Register() {
     setError('');
     setSuccess('');
     
+    // FIX: Forced fallback directly to your live Render server url
+    const API_URL = process.env.REACT_APP_API_URL || 'https://vcip-prod-server.onrender.com';
+    
     try {
       const { confirmPassword, agreeTerms, ...submitData } = form;
       await register(submitData);
@@ -116,7 +119,6 @@ function Register() {
               {success && <div className="alert alert-success">{success}</div>}
               
               <form onSubmit={handleSubmit}>
-                {/* Role Selection - Top of the form */}
                 <div className="alert alert-info mb-3">
                   <strong>Select Your Role:</strong> This determines what features you can access.
                 </div>
@@ -172,7 +174,6 @@ function Register() {
 
                 <hr />
 
-                {/* Personal Information Section */}
                 <h5 className="mb-3 text-primary">Personal Information</h5>
                 <div className="row">
                   <div className="col-md-6 mb-3">
@@ -232,7 +233,6 @@ function Register() {
                   </div>
                 </div>
 
-                {/* Address Section */}
                 <h5 className="mb-3 mt-3 text-primary">Address Information</h5>
                 <div className="mb-3">
                   <label className="form-label">Address</label>
@@ -254,7 +254,6 @@ function Register() {
                   </div>
                 </div>
 
-                {/* Account Security Section */}
                 <h5 className="mb-3 mt-3 text-primary">Account Security</h5>
                 <div className="row">
                   <div className="col-md-6 mb-3">
@@ -269,13 +268,11 @@ function Register() {
                   </div>
                 </div>
 
-                {/* Institution */}
                 <div className="mb-3">
                   <label className="form-label">Institution / Organization</label>
                   <input type="text" name="institution" className="form-control" value={form.institution} onChange={handleChange} placeholder="University or Company name (optional)" />
                 </div>
 
-                {/* Terms and Conditions */}
                 <div className="mb-3 form-check">
                   <input type="checkbox" name="agreeTerms" className="form-check-input" checked={form.agreeTerms} onChange={handleChange} required />
                   <label className="form-check-label">

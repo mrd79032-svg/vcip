@@ -9,6 +9,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // FIX: Force fallback to your new live Render backend URL directly
+  const API_URL = process.env.REACT_APP_API_URL || 'https://vcip-prod-server.onrender.com';
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -21,7 +24,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('https://vcip-backend-utej.onrender.com/api/auth/me');
+      // Live Render URL mapped dynamically
+      const res = await axios.get(`${API_URL}/api/auth/me`);
       setUser(res.data);
     } catch (err) {
       console.error('Failed to fetch user:', err);
@@ -34,7 +38,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('https://vcip-backend-utej.onrender.com/api/auth/register', userData);
+      // Live Render URL mapped dynamically for registration
+      const response = await axios.post(`${API_URL}/api/auth/register`, userData);
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
@@ -49,7 +54,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('https://vcip-backend-utej.onrender.com/api/auth/login', { email, password });
+      // Live Render URL mapped dynamically for login
+      const response = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));

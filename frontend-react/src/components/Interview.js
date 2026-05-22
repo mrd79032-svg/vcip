@@ -10,6 +10,9 @@ function Interview() {
     const [loading, setLoading] = useState(true);
     const [warningCount, setWarningCount] = useState(0);
 
+    // Dynamic API URL Setup from .env file
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
     // Anti-cheat: Disable copy-paste
     useEffect(() => {
         const disableCopyPaste = (e) => {
@@ -32,7 +35,8 @@ function Interview() {
 
     const fetchQuestion = async () => {
         try {
-            const res = await fetch(`https://vcip-backend-utej.onrender.com/api/questions/${id}`);
+            // FIX: Purana hardcoded URL hata kar dynamic template literal lagaya hai
+            const res = await fetch(`${API_URL}/api/questions/${id}`);
             const data = await res.json();
             setQuestion(data);
             setLoading(false);
@@ -43,7 +47,8 @@ function Interview() {
 
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
-        const res = await fetch('https://vcip-backend-utej.onrender.com/api/submissions', {
+        // FIX: Submissions endpoint ko bhi live URL par map kiya hai
+        const res = await fetch(`${API_URL}/api/submissions`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
