@@ -14,7 +14,6 @@ require('dotenv').config();
 console.log('=== GEMINI API DEBUG ===');
 console.log('API Key exists:', !!process.env.GEMINI_API_KEY);
 console.log('API Key length:', process.env.GEMINI_API_KEY?.length);
-console.log('API Key first 5 chars:', process.env.GEMINI_API_KEY?.substring(0, 5));
 console.log('========================');
 
 const app = express();
@@ -23,7 +22,7 @@ const server = http.createServer(app);
 // ==================== SOCKET.IO CONFIGURATION ====================
 const io = socketIo(server, {
     cors: {
-        origin: true, // FIX 1: Allowed both Netlify and localhost automatically
+        origin: true, 
         methods: ["GET", "POST"],
         credentials: true,
         allowedHeaders: ["Content-Type", "Authorization"]
@@ -34,9 +33,9 @@ const io = socketIo(server, {
     pingInterval: 25000
 });
 
-// CORS for HTTP requests (Fixes the Login/Signup 'net::ERR_FAILED' error)
+// CORS for HTTP requests
 app.use(cors({
-    origin: true, // FIX 2: Allowed all frontend links dynamically
+    origin: true, 
     credentials: true
 }));
 app.use(express.json());
@@ -413,7 +412,7 @@ app.post('/api/compile/run', verifyToken, async (req, res) => {
 // ==================== AI CODE EVALUATION ====================
 async function evaluateCodeWithAI(code, question, language, expectedOutput = null) {
     if (!process.env.GEMINI_API_KEY) {
-        console.error('GEMINI_API_KEY is missing from .env file');
+        console.error('GEMINI_API_KEY is missing from environment variables');
         return getEnhancedFallbackEvaluation();
     }
     
@@ -432,34 +431,12 @@ Language: ${language}
 Code:
 ${code}
 
-Please provide a detailed evaluation in the following JSON format. Be honest and constructive:
-
-{
-    "score": (number 0-100, be strict but fair),
-    "correctness": (string: "correct", "partial", or "incorrect"),
-    "timeComplexity": (string: e.g., "O(n)", "O(n²)", "O(log n)"),
-    "spaceComplexity": (string: e.g., "O(1)", "O(n)"),
-    "syntaxErrors": (string: list any syntax errors or "None"),
-    "logicErrors": (string: describe any logical issues),
-    "codeQuality": (number: rate code readability and structure 0-100),
-    "strengths": (string: what the candidate did well),
-    "improvements": (string: specific suggestions to improve),
-    "detailedFeedback": (string: comprehensive feedback for the candidate),
-    "interviewerNotes": (string: notes for the interviewer about this solution)
-}
-
-Return ONLY valid JSON, no other text.`;
+Please provide a detailed evaluation in the following JSON format. Return ONLY valid JSON, no markdown formatting.`;
 
     try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
-        
         const model = genAIInstance.getGenerativeModel({ model: "gemini-1.5-flash" });
-        const result = await model.generateContent(prompt, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        
+        const result = await model.generateContent(prompt);
         const response = result.response.text();
-        console.log('AI Response received successfully');
         
         const jsonMatch = response.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
@@ -471,7 +448,7 @@ Return ONLY valid JSON, no other text.`;
         }
         return getEnhancedFallbackEvaluation();
     } catch (error) {
-        console.error('AI evaluation failed - Full error:', error.message);
+        console.error('AI evaluation failed:', error.message);
         return getEnhancedFallbackEvaluation();
     }
 }
@@ -487,20 +464,16 @@ function getEnhancedFallbackEvaluation() {
         codeQuality: 70,
         strengths: "Code structure is acceptable",
         improvements: "Consider edge cases and optimization",
-        detailedFeedback: "Your code has been submitted. The AI evaluation system is currently unavailable. An interviewer will review your solution manually.",
+        detailedFeedback: "Your code has been submitted. The AI evaluation system is currently offline.",
         interviewerNotes: "AI evaluation was unavailable. Please review manually."
     };
 }
 
-// AI Evaluation Endpoint
 app.post('/api/evaluate/submission', verifyToken, async (req, res) => {
     try {
         const { code, questionId, language } = req.body;
-        
         const question = await Question.findById(questionId);
-        if (!question) {
-            return res.status(404).json({ error: 'Question not found' });
-        }
+        if (!question) return res.status(404).json({ error: 'Question not found' });
         
         const evaluation = await evaluateCodeWithAI(code, question, language);
         
@@ -508,7 +481,7 @@ app.post('/api/evaluate/submission', verifyToken, async (req, res) => {
             { userId: req.userId, questionId: questionId },
             { 
                 aiScore: evaluation.score,
-                aiFeedback: evaluation.detailedFeedback || evaluation.feedback,
+                aiFeedback: evaluation.detailedFeedback,
                 aiDetailedFeedback: evaluation,
                 timeComplexity: evaluation.timeComplexity,
                 spaceComplexity: evaluation.spaceComplexity,
@@ -519,27 +492,16 @@ app.post('/api/evaluate/submission', verifyToken, async (req, res) => {
             { new: true, upsert: true }
         );
         
-        res.json({
-            success: true,
-            evaluation: evaluation,
-            submissionId: submission._id
-        });
-        
+        res.json({ success: true, evaluation, submissionId: submission._id });
     } catch (error) {
-        console.error('Evaluation error:', error);
         res.status(500).json({ error: error.message });
     }
 });
 
 app.get('/api/submissions/:submissionId', verifyToken, async (req, res) => {
     try {
-        const submission = await Submission.findById(req.params.submissionId)
-            .populate('questionId', 'title description difficulty');
-        
-        if (!submission) {
-            return res.status(404).json({ error: 'Submission not found' });
-        }
-        
+        const submission = await Submission.findById(req.params.submissionId).populate('questionId', 'title description difficulty');
+        if (!submission) return res.status(404).json({ error: 'Submission not found' });
         res.json(submission);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -550,24 +512,13 @@ app.get('/api/submissions/:submissionId', verifyToken, async (req, res) => {
 app.post('/api/proctoring/violation', verifyToken, async (req, res) => {
     try {
         const { interviewId, type, details } = req.body;
-        
-        const violation = new Violation({
-            interviewId,
-            candidateId: req.userId,
-            type,
-            details
-        });
+        const violation = new Violation({ interviewId, candidateId: req.userId, type, details });
         await violation.save();
         
-        const violationCount = await Violation.countDocuments({ 
-            interviewId, 
-            candidateId: req.userId 
-        });
-        
+        const violationCount = await Violation.countDocuments({ interviewId, candidateId: req.userId });
         if (violationCount >= 3) {
             await Interview.findByIdAndUpdate(interviewId, { status: 'flagged' });
         }
-        
         res.json({ success: true, violationCount });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -576,9 +527,7 @@ app.post('/api/proctoring/violation', verifyToken, async (req, res) => {
 
 app.get('/api/proctoring/violations/:interviewId', verifyToken, async (req, res) => {
     try {
-        const violations = await Violation.find({ 
-            interviewId: req.params.interviewId 
-        }).sort({ timestamp: -1 });
+        const violations = await Violation.find({ interviewId: req.params.interviewId }).sort({ timestamp: -1 });
         res.json(violations);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -600,9 +549,7 @@ app.get('/api/admin/stats', verifyAdmin, async (req, res) => {
     const pendingQuestions = await Question.countDocuments({ isApproved: false });
     const totalSubmissions = await Submission.countDocuments();
     const totalViolations = await Violation.countDocuments();
-    const averageScore = await Submission.aggregate([
-        { $group: { _id: null, avg: { $avg: '$score' } } }
-    ]);
+    const averageScore = await Submission.aggregate([{ $group: { _id: null, avg: { $avg: '$score' } } }]);
     
     res.json({ 
         totalUsers, totalCandidates, totalInterviewers, 
@@ -612,32 +559,7 @@ app.get('/api/admin/stats', verifyAdmin, async (req, res) => {
     });
 });
 
-app.get('/api/admin/pending-questions', verifyAdmin, async (req, res) => {
-    const pending = await Question.find({ isApproved: false }).populate('createdBy', 'username fullName');
-    res.json(pending);
-});
-
-app.put('/api/admin/approve/:id', verifyAdmin, async (req, res) => {
-    const question = await Question.findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true });
-    res.json(question);
-});
-
-app.delete('/api/admin/reject/:id', verifyAdmin, async (req, res) => {
-    await Question.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Rejected' });
-});
-
 // ==================== QUESTION ROUTES ====================
-app.post('/api/questions/generate', verifyInterviewer, async (req, res) => {
-    const { prompt } = req.body;
-    res.json({
-        title: prompt.substring(0, 40),
-        description: `Write a solution for: ${prompt}`,
-        difficulty: 'medium',
-        language: 'python'
-    });
-});
-
 app.post('/api/questions', verifyInterviewer, async (req, res) => {
     const question = new Question({ ...req.body, createdBy: req.userId, isApproved: false });
     await question.save();
@@ -655,20 +577,10 @@ app.get('/api/questions/:id', async (req, res) => {
     res.json(question);
 });
 
-app.get('/api/questions/my-questions', verifyInterviewer, async (req, res) => {
-    try {
-        const myQuestions = await Question.find({ createdBy: req.userId });
-        res.json(myQuestions);
-    } catch (err) {
-        res.status(500).json([]);
-    }
-});
-
 // ==================== SUBMISSION ROUTES ====================
 app.post('/api/submissions', verifyToken, async (req, res) => {
     try {
         const { code, questionId, language } = req.body;
-        
         let submission = await Submission.findOne({ userId: req.userId, questionId });
         
         if (submission) {
@@ -676,27 +588,10 @@ app.post('/api/submissions', verifyToken, async (req, res) => {
             submission.language = language || submission.language;
             await submission.save();
         } else {
-            submission = new Submission({ 
-                userId: req.userId, 
-                questionId, 
-                code,
-                language: language || 'javascript'
-            });
+            submission = new Submission({ userId: req.userId, questionId, code, language: language || 'javascript' });
             await submission.save();
         }
-        
         res.json({ message: 'Submitted successfully', submission });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-app.get('/api/submissions/my', verifyToken, async (req, res) => {
-    try {
-        const submissions = await Submission.find({ userId: req.userId })
-            .populate('questionId', 'title difficulty')
-            .sort({ submittedAt: -1 });
-        res.json(submissions);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -706,107 +601,30 @@ app.get('/api/submissions/my', verifyToken, async (req, res) => {
 app.post('/api/interviews/start', verifyToken, async (req, res) => {
     try {
         const { questionId } = req.body;
-        
         const roomId = `room_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        
         let interview = await Interview.findOne({ candidateId: req.userId, questionId, status: 'ongoing' });
         
         if (!interview) {
-            interview = new Interview({ 
-                candidateId: req.userId, 
-                questionId, 
-                roomId,
-                status: 'ongoing',
-                startedAt: new Date()
-            });
+            interview = new Interview({ candidateId: req.userId, questionId, roomId, status: 'ongoing', startedAt: new Date() });
             await interview.save();
         }
-        
         res.json({ interviewId: interview._id, roomId: interview.roomId });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-app.post('/api/interviews/end', verifyToken, async (req, res) => {
-    try {
-        const { interviewId } = req.body;
-        await Interview.findByIdAndUpdate(interviewId, { 
-            status: 'completed', 
-            completedAt: new Date() 
-        });
-        res.json({ message: 'Interview completed' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+// ==================== FIXED MONGOOSE CONNECTION FOR CLOUD ENVIRONMENT ====================
+// FIX 3: Dynamic DB handler. Checks if cloud URI exists, otherwise fallbacks safely.
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/vcip';
 
-app.get('/api/interviews/active', verifyToken, async (req, res) => {
-    try {
-        const user = await User.findById(req.userId);
-        let active;
-        
-        if (user.role === 'admin' || user.role === 'interviewer') {
-            active = await Interview.find({ status: 'ongoing' })
-                .populate('candidateId', 'username fullName')
-                .populate('questionId', 'title');
-        } else {
-            active = await Interview.find({ candidateId: req.userId, status: 'ongoing' })
-                .populate('questionId', 'title');
-        }
-        
-        res.json(active);
-    } catch (err) {
-        res.status(500).json([]);
-    }
-});
-
-app.get('/api/interviews/:interviewId', verifyToken, async (req, res) => {
-    try {
-        const interview = await Interview.findById(req.params.interviewId)
-            .populate('candidateId', 'username fullName email')
-            .populate('questionId', 'title description difficulty');
-        
-        if (!interview) {
-            return res.status(404).json({ error: 'Interview not found' });
-        }
-        
-        res.json(interview);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// ==================== LEADERBOARD ====================
-app.get('/api/submissions/leaderboard', verifyAdmin, async (req, res) => {
-    try {
-        const leaderboard = await Submission.aggregate([
-            {
-                $group: {
-                    _id: '$userId',
-                    averageScore: { $avg: '$score' },
-                    totalSubmissions: { $sum: 1 },
-                    bestScore: { $max: '$score' }
-                }
-            },
-            { $sort: { averageScore: -1 } },
-            { $limit: 10 }
-        ]);
-        
-        await User.populate(leaderboard, { path: '_id', select: 'username fullName' });
-        res.json(leaderboard);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// ==================== START SERVER ====================
-// FIX 3: Temporary Local MongoDB crash handler to keep cloud server active
-mongoose.connect('mongodb://localhost:27017/vcip')
-    .then(() => console.log('✅ MongoDB connected locally'))
+mongoose.connect(MONGO_URI)
+    .then(() => console.log(`✅ MongoDB Successfully Connected to: ${MONGO_URI.includes('localhost') || MONGO_URI.includes('127.0.0.1') ? 'Local Database' : 'MongoDB Atlas Cloud'}`))
     .catch(err => {
-        console.log('⚠️ MongoDB Local connection bypassed for Render Cloud Deployment Testing.');
-        console.log('Note: To save data permanently on Cloud, we will update this to MongoDB Atlas later.');
+        console.error('❌ CRITICAL: Database connection failed. Bootstrapping raw server...');
+        console.error(err.message);
     });
 
-server.listen(5000, () => console.log('🚀 Server successfully running on port 5000'));
+// Port settings for Render Deployment
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
