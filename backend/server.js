@@ -612,18 +612,21 @@ app.post('/api/interviews/start', verifyToken, async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+});// ==================== FIXED MONGOOSE CONNECTION FOR CLOUD ENVIRONMENT ====================
+// Hardcoded fallback direct cloud atlas link ke sath taaki buffering timeout bilkul na aaye
+const MONGO_URI = 'mongodb+srv://mrd79032_db_user:dhqWoIatQhIhC0WR@cluster0.vu6imfj.mongodb.net/vcip?retryWrites=true&w=majority&appName=Cluster0';
+
+mongoose.connect(MONGO_URI, {
+    serverSelectionTimeoutMS: 5000, 
+    socketTimeoutMS: 45000,         
+})
+.then(() => {
+    console.log("✅ MongoDB Successfully Connected to MongoDB Atlas Cloud");
+})
+.catch(err => {
+    console.error('❌ CRITICAL: Database connection failed.');
+    console.error(err.message);
 });
-
-// ==================== FIXED MONGOOSE CONNECTION FOR CLOUD ENVIRONMENT ====================
-// FIX 3: Dynamic DB handler. Checks if cloud URI exists, otherwise fallbacks safely.
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/vcip';
-
-mongoose.connect(MONGO_URI)
-    .then(() => console.log(`✅ MongoDB Successfully Connected to: ${MONGO_URI.includes('localhost') || MONGO_URI.includes('127.0.0.1') ? 'Local Database' : 'MongoDB Atlas Cloud'}`))
-    .catch(err => {
-        console.error('❌ CRITICAL: Database connection failed. Bootstrapping raw server...');
-        console.error(err.message);
-    });
 
 // Port settings for Render Deployment
 const PORT = process.env.PORT || 5000;
