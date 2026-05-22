@@ -23,7 +23,7 @@ const server = http.createServer(app);
 // ==================== SOCKET.IO CONFIGURATION ====================
 const io = socketIo(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: true, // FIX: Allowed both Netlify and localhost automatically
         methods: ["GET", "POST"],
         credentials: true,
         allowedHeaders: ["Content-Type", "Authorization"]
@@ -34,9 +34,9 @@ const io = socketIo(server, {
     pingInterval: 25000
 });
 
-// CORS for HTTP requests
+// CORS for HTTP requests (Fixes the Login/Signup 'net::ERR_FAILED' error)
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: true, // FIX: Allowed all frontend links to make API requests
     credentials: true
 }));
 app.use(express.json());
@@ -412,13 +412,11 @@ app.post('/api/compile/run', verifyToken, async (req, res) => {
 
 // ==================== AI CODE EVALUATION ====================
 async function evaluateCodeWithAI(code, question, language, expectedOutput = null) {
-    // Check if API key exists
     if (!process.env.GEMINI_API_KEY) {
         console.error('GEMINI_API_KEY is missing from .env file');
         return getEnhancedFallbackEvaluation();
     }
     
-    // Initialize genAI
     const genAIInstance = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     
     const prompt = `You are an expert coding interviewer. Evaluate the following code solution thoroughly.
@@ -474,12 +472,6 @@ Return ONLY valid JSON, no other text.`;
         return getEnhancedFallbackEvaluation();
     } catch (error) {
         console.error('AI evaluation failed - Full error:', error.message);
-        if (error.message.includes('API key')) {
-            console.error('API key issue - please check your GEMINI_API_KEY in .env file');
-        }
-        if (error.message.includes('quota')) {
-            console.error('API quota exceeded - please check your Google Cloud billing');
-        }
         return getEnhancedFallbackEvaluation();
     }
 }
