@@ -10,11 +10,14 @@ const app = express();
 
 // ==================== SMART CORS CONFIGURATION ====================
 // Ye setup localhost aur aapke aane wale live frontend dono ko auto-handle karega
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5173', // Vite standard port (agar aap use kar rahe ho)
-    'https://your-vcip-frontend.netlify.app', // ⚠️ Yahan apna live frontend URL replace kar lena jab deploy hoga
-];
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://exquisite-seahorse-01220f.netlify.app'
+    ],
+    credentials: true
+}));
 
 app.use(cors({
     origin: function (origin, callback) {
